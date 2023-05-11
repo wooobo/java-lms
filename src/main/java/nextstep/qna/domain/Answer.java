@@ -49,28 +49,12 @@ public class Answer {
         }
     }
 
-    @Deprecated
-    public Long getId() {
-        return id;
-    }
-
-    @Deprecated
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    @Deprecated
-    public NsUser getWriter() {
-        return writer;
     }
 
     public void toQuestion(Question question) {
@@ -89,11 +73,6 @@ public class Answer {
         delete();
 
         return DeleteHistory.OfAnswer(id, user);
-    }
-
-    @Override
-    public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
 
     @Override

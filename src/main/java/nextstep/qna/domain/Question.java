@@ -5,7 +5,6 @@ import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -53,22 +52,6 @@ public class Question {
         return deleted;
     }
 
-    @Deprecated
-    public Long getId() {
-        return id;
-    }
-
-    @Deprecated
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    @Deprecated
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
-    }
-
     public boolean containAnswer(Answer answer) {
         return answers.contains(answer);
     }
@@ -94,6 +77,10 @@ public class Question {
         }
 
         throw new CannotDeleteException("질문 작성자만 삭제 가능합니다.");
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override
