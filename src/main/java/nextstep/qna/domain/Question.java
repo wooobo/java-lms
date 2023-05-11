@@ -17,7 +17,7 @@ public class Question {
 
     private NsUser writer;
 
-    private List<Answer> answers = new ArrayList<>();
+    private Answers answers = Answers.empty();
 
     private boolean deleted = false;
 
@@ -54,7 +54,7 @@ public class Question {
 
     @Deprecated
     public List<Answer> getAnswers() {
-        return answers;
+        return null;
     }
 
     @Deprecated
@@ -76,38 +76,28 @@ public class Question {
     public boolean containAnswer(Answer answer) {
         return answers.contains(answer);
     }
-    
-    public Question delete(NsUser user) {
-        validateIsOwner(user);
-        validWrittenByQuestionWriter(user);
-        answers.forEach(it -> it.delete(user));
-        deleted = true;
 
-        return this;
+    public List<DeleteHistory> delete(NsUser user) {
+        validateIsOwner(user);
+
+        List<DeleteHistory> deleteHistories = answers.delete(user);
+        deleteHistories.add(deleteToHistory(user));
+
+        return deleteHistories;
     }
 
-    private void validWrittenByQuestionWriter(NsUser questionWriter) {
-        long answersByQuestionWriterCount = answers.stream()
-            .filter(answer -> answer.isOwner(questionWriter))
-            .count();
+    private DeleteHistory deleteToHistory(NsUser user) {
+        deleted = true;
 
-        if (answersByQuestionWriterCount != answers.size()) {
-            throw new IllegalArgumentException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
+        return DeleteHistory.OfQuestion(id, user);
     }
 
     private void validateIsOwner(NsUser user) {
         if (isOwner(user)) {
             return;
         }
-        
-        throw new IllegalArgumentException("질문 작성자만 삭제 가능합니다.");
-    }
 
-    @Override
-    public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents
-            + ", writer=" + writer + "]";
+        throw new IllegalArgumentException("질문 작성자만 삭제 가능합니다.");
     }
 
     @Override

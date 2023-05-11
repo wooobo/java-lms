@@ -31,7 +31,15 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
+        validate(writer, question);
+
         this.id = id;
+        this.writer = writer;
+        this.question = question;
+        this.contents = contents;
+    }
+
+    private static void validate(NsUser writer, Question question) {
         if (writer == null) {
             throw new UnAuthorizedException();
         }
@@ -39,10 +47,6 @@ public class Answer {
         if (question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
     }
 
     @Deprecated
@@ -77,14 +81,14 @@ public class Answer {
         deleted = true;
     }
 
-    public Answer delete(NsUser user) {
+    public DeleteHistory delete(NsUser user) {
         if (!isOwner(user)) {
              throw new IllegalArgumentException("답변 작성자만 삭제 가능합니다.");
         }
 
         delete();
 
-        return this;
+        return DeleteHistory.OfAnswer(id, user);
     }
 
     @Override
