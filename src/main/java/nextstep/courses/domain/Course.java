@@ -13,7 +13,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
+    private Course() {
     }
 
     public Course(String title, Long creatorId) {
@@ -28,14 +28,17 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
+    @Deprecated
     public String getTitle() {
         return title;
     }
 
+    @Deprecated
     public Long getCreatorId() {
         return creatorId;
     }
 
+    @Deprecated
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

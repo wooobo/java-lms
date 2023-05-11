@@ -22,7 +22,7 @@ public class NsUser {
 
     private LocalDateTime updatedAt;
 
-    public NsUser() {
+    private NsUser() {
     }
 
     public NsUser(Long id, String userId, String password, String name, String email) {
@@ -39,44 +39,24 @@ public class NsUser {
         this.updatedAt = updatedAt;
     }
 
+    @Deprecated
     public Long getId() {
         return id;
     }
 
+    @Deprecated
     public String getUserId() {
         return userId;
     }
 
-    public NsUser setUserId(String userId) {
-        this.userId = userId;
-        return this;
-    }
-
+    @Deprecated
     public String getPassword() {
         return password;
     }
 
-    public NsUser setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
+    @Deprecated
     public String getName() {
         return name;
-    }
-
-    public NsUser setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public NsUser setEmail(String email) {
-        this.email = email;
-        return this;
     }
 
     public void update(NsUser loginUser, NsUser target) {
@@ -92,25 +72,12 @@ public class NsUser {
         this.email = target.email;
     }
 
-    public boolean matchUser(NsUser target) {
-        return matchUserId(target.getUserId());
-    }
-
     private boolean matchUserId(String userId) {
         return this.userId.equals(userId);
     }
 
     public boolean matchPassword(String targetPassword) {
         return password.equals(targetPassword);
-    }
-
-    public boolean equalsNameAndEmail(NsUser target) {
-        if (Objects.isNull(target)) {
-            return false;
-        }
-
-        return name.equals(target.name) &&
-                email.equals(target.email);
     }
 
     public boolean isGuestUser() {

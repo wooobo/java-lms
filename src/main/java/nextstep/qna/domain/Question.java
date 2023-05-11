@@ -23,7 +23,7 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
+    private Question() {
     }
 
     public Question(NsUser writer, String title, String contents) {
@@ -37,26 +37,9 @@ public class Question {
         this.contents = contents;
     }
 
+    @Deprecated
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Question setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public Question setContents(String contents) {
-        this.contents = contents;
-        return this;
     }
 
     public NsUser getWriter() {
@@ -72,6 +55,7 @@ public class Question {
         return writer.equals(loginUser);
     }
 
+    @Deprecated
     public Question setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -81,6 +65,7 @@ public class Question {
         return deleted;
     }
 
+    @Deprecated
     public List<Answer> getAnswers() {
         return answers;
     }

@@ -21,7 +21,7 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
+    private Answer() {
     }
 
     public Answer(NsUser writer, Question question, String contents) {
@@ -43,10 +43,12 @@ public class Answer {
         this.contents = contents;
     }
 
+    @Deprecated
     public Long getId() {
         return id;
     }
 
+    @Deprecated
     public Answer setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -60,12 +62,9 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
+    @Deprecated
     public NsUser getWriter() {
         return writer;
-    }
-
-    public String getContents() {
-        return contents;
     }
 
     public void toQuestion(Question question) {
