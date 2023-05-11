@@ -18,18 +18,18 @@ public class AnswerTest {
     void 삭제요청_사용자와_질문작성자_같으면_삭제_가능() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
 
-        Answer actual = answer.delete(NsUserTest.JAVAJIGI);
+        answer.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(actual.isDeleted()).isTrue();
+        assertThat(answer.isDeleted()).isTrue();
     }
 
     @Test
     void 삭제요청_사용자와_질문작성자_다르면_삭제안됨() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
 
-        Answer actual = answer.delete(NsUserTest.SANJIGI);
-
-        assertThat(actual.isDeleted()).isFalse();
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+            answer.delete(NsUserTest.SANJIGI);
+        });
     }
 
 
