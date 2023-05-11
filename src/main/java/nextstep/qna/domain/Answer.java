@@ -1,5 +1,6 @@
 package nextstep.qna.domain;
 
+import java.util.Objects;
 import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
@@ -7,6 +8,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 
 public class Answer {
+
     private Long id;
 
     private NsUser writer;
@@ -30,11 +32,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -76,15 +78,38 @@ public class Answer {
     }
 
     public Answer delete(NsUser user) {
-        if(isOwner(user)) {
-            delete();
+        if (!isOwner(user)) {
+             throw new IllegalArgumentException("답변 작성자만 삭제 가능합니다.");
         }
+
+        delete();
 
         return this;
     }
-    
+
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (id == null) {
+            return false;
+        }
+
+        Answer answer = (Answer) o;
+        return Objects.equals(id, answer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
