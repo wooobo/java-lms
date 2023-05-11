@@ -1,6 +1,7 @@
 package nextstep.qna.domain;
 
 import java.util.Objects;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
@@ -53,11 +54,6 @@ public class Question {
     }
 
     @Deprecated
-    public List<Answer> getAnswers() {
-        return null;
-    }
-
-    @Deprecated
     public Long getId() {
         return id;
     }
@@ -97,7 +93,7 @@ public class Question {
             return;
         }
 
-        throw new IllegalArgumentException("질문 작성자만 삭제 가능합니다.");
+        throw new CannotDeleteException("질문 작성자만 삭제 가능합니다.");
     }
 
     @Override
