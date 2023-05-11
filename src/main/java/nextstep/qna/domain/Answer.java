@@ -71,6 +71,18 @@ public class Answer {
         this.question = question;
     }
 
+    public void delete() {
+        deleted = true;
+    }
+
+    public Answer delete(NsUser user) {
+        if(isOwner(user)) {
+            delete();
+        }
+
+        return this;
+    }
+    
     @Override
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
