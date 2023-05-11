@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ public class QuestionTest {
     }
 
     @Test
-    void 질문_삭제_상태_변경할수있다() {
+    void 질문_삭제_상태_변경할수있다() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
         question.delete(NsUserTest.JAVAJIGI);
@@ -46,13 +47,13 @@ public class QuestionTest {
     void 질문_작성자가_아니면_삭제불가() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
 
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+        assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> {
             question.delete(NsUserTest.SANJIGI);
         });
     }
 
     @Test
-    void 질문_답변_작성자_모두같으면_삭제가능() {
+    void 질문_답변_작성자_모두같으면_삭제가능() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
@@ -68,13 +69,13 @@ public class QuestionTest {
         Answer answer = new Answer(1L, NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
 
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
+        assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> {
             question.delete(NsUserTest.JAVAJIGI);
         });
     }
 
     @Test
-    void 질문_삭제시_답변같이_삭제됨() {
+    void 질문_삭제시_답변같이_삭제됨() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
@@ -85,7 +86,7 @@ public class QuestionTest {
     }
 
     @Test
-    void 삭제시_히스토리를반환_한다() {
+    void 삭제시_히스토리를반환_한다() throws CannotDeleteException {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         question.addAnswer(answer);
