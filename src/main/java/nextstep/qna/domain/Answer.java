@@ -1,7 +1,6 @@
 package nextstep.qna.domain;
 
 import java.util.Objects;
-import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
@@ -12,8 +11,6 @@ public class Answer {
     private Long id;
 
     private NsUser writer;
-
-    private Question question;
 
     private String contents;
 
@@ -26,26 +23,21 @@ public class Answer {
     private Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+    public Answer(NsUser writer, String contents) {
+        this(null, writer,  contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
-        validate(writer, question);
+    public Answer(Long id, NsUser writer, String contents) {
+        validate(writer);
 
         this.id = id;
         this.writer = writer;
-        this.question = question;
         this.contents = contents;
     }
 
-    private static void validate(NsUser writer, Question question) {
+    private static void validate(NsUser writer) {
         if (writer == null) {
             throw new UnAuthorizedException();
-        }
-
-        if (question == null) {
-            throw new NotFoundException();
         }
     }
 
@@ -55,10 +47,6 @@ public class Answer {
 
     public boolean isOwner(NsUser writer) {
         return this.writer.equals(writer);
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     public void delete() {

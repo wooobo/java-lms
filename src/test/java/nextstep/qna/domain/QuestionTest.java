@@ -17,7 +17,7 @@ public class QuestionTest {
     @Test
     void 질문에_답변_추가_가능() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, "Answers Contents1");
 
         question.addAnswer(answer);
 
@@ -55,7 +55,7 @@ public class QuestionTest {
     @Test
     void 질문_답변_작성자_모두같으면_삭제가능() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI,"Answers Contents1");
         question.addAnswer(answer);
 
         question.delete(NsUserTest.JAVAJIGI);
@@ -66,7 +66,7 @@ public class QuestionTest {
     @Test
     void 다른사람_답변_존재시_답변_삭제_불가() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(1L, NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer answer = new Answer(1L, NsUserTest.SANJIGI,  "Answers Contents1");
         question.addAnswer(answer);
 
         assertThatExceptionOfType(CannotDeleteException.class).isThrownBy(() -> {
@@ -77,7 +77,7 @@ public class QuestionTest {
     @Test
     void 질문_삭제시_답변같이_삭제됨() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, "Answers Contents1");
         question.addAnswer(answer);
 
         question.delete(NsUserTest.JAVAJIGI);
@@ -88,7 +88,7 @@ public class QuestionTest {
     @Test
     void 삭제시_히스토리를반환_한다() throws CannotDeleteException {
         Question question = new Question(1L, NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        Answer answer = new Answer(1L, NsUserTest.JAVAJIGI,  "Answers Contents1");
         question.addAnswer(answer);
 
         List<DeleteHistory> actual = question.delete(NsUserTest.JAVAJIGI);
