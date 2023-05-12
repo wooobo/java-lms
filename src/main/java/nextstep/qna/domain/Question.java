@@ -11,9 +11,7 @@ public class Question {
 
     private Long id;
 
-    private String title;
-
-    private String contents;
+    private QuestionBody questionBody;
 
     private NsUser writer;
 
@@ -28,15 +26,14 @@ public class Question {
     private Question() {
     }
 
-    public Question(Long id, NsUser writer, String title, String contents) {
+    public Question(Long id, NsUser writer, QuestionBody questionBody) {
         this.id = id;
         this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.questionBody = questionBody;
     }
 
-    public Question(NsUser writer, String title, String contents) {
-        this(0L, writer, title, contents);
+    public Question(NsUser writer, QuestionBody questionBody) {
+        this(0L, writer, questionBody);
     }
 
     public void addAnswer(Answer answer) {
