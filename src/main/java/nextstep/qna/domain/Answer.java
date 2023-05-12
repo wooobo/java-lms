@@ -1,17 +1,16 @@
 package nextstep.qna.domain;
 
-import nextstep.qna.NotFoundException;
+import java.util.Objects;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
 public class Answer {
+
     private Long id;
 
     private NsUser writer;
-
-    private Question question;
 
     private String contents;
 
@@ -21,35 +20,25 @@ public class Answer {
 
     private LocalDateTime updatedDate;
 
-    public Answer() {
+    private Answer() {
     }
 
-    public Answer(NsUser writer, Question question, String contents) {
-        this(null, writer, question, contents);
+    public Answer(NsUser writer, String contents) {
+        this(null, writer,  contents);
     }
 
-    public Answer(Long id, NsUser writer, Question question, String contents) {
+    public Answer(Long id, NsUser writer, String contents) {
+        validate(writer);
+
         this.id = id;
-        if(writer == null) {
-            throw new UnAuthorizedException();
-        }
-
-        if(question == null) {
-            throw new NotFoundException();
-        }
-
         this.writer = writer;
-        this.question = question;
         this.contents = contents;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Answer setDeleted(boolean deleted) {
-        this.deleted = deleted;
-        return this;
+    private static void validate(NsUser writer) {
+        if (writer == null) {
+            throw new UnAuthorizedException();
+        }
     }
 
     public boolean isDeleted() {
@@ -60,20 +49,38 @@ public class Answer {
         return this.writer.equals(writer);
     }
 
-    public NsUser getWriter() {
-        return writer;
+    public void delete() {
+        deleted = true;
     }
 
-    public String getContents() {
-        return contents;
-    }
+    public DeleteHistory delete(NsUser user) {
+        if (!isOwner(user)) {
+             throw new IllegalArgumentException("답변 작성자만 삭제 가능합니다.");
+        }
 
-    public void toQuestion(Question question) {
-        this.question = question;
+        delete();
+
+        return DeleteHistory.OfAnswer(id, user);
     }
 
     @Override
-    public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (id == null) {
+            return false;
+        }
+
+        Answer answer = (Answer) o;
+        return Objects.equals(id, answer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
